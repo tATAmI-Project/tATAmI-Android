@@ -1,0 +1,47 @@
+#-------------------------------------------------------------------------------
+# Copyright (C) 2013 Andrei Olaru, Marius-Tudor Benea, Nguyen Thi Thuy Nga, Amal El Fallah Seghrouchni, Cedric Herpson.
+# 
+# This file is part of tATAmI-Android.
+# 
+# tATAmI-Android is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.
+# 
+# tATAmI-Android is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
+# 
+# You should have received a copy of the GNU Lesser General Public License along with tATAmI-Android.  If not, see <http://www.gnu.org/licenses/>.
+#-------------------------------------------------------------------------------
+// This file should be in dokuwiki syntax [[http://www.dokuwiki.org/syntax]] //
+// exception: in the file use -- and -/ instead of <del> and </del> for strikethroughs
+
+In this file:
+- always number in order, keep the numbers of items;
+- move solved issues, comments and bugs to the solved section, keeping the same number
+
+=============================================================================================================================================
+
+===== Bugs - things that are expected to work and don't work as expected
+
+1.
+
+== solved
+
+
+=============================================================================================================================================
+
+===== Issues - things that work as expected, but should work in a different way / be implemented differently
+
+1. Integrate the Web Services part of S-CLAIM. For the moment a part of the WSAgent class, that makes use of RMI, is commented because of the lack of Android support for RMI.
+
+== solved
+2. -- Find a solution for the two JadeLogWrapper methods that have the content commented, because of the lack of support of Android for java.util.logging.Logger -/
+3. -- Make the common files of S-CLAIM, for both the Android version and the PC one, available in a single place (in the PC project) and able to be referenced by the other project. -/
+
+
+=============================================================================================================================================
+
+====== Comments - general comments and questions
+
+1.
+
+== solved
+
+

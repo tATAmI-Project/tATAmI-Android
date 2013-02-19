@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2013 Andrei Olaru, Marius-Tudor Benea, Nguyen Thi Thuy Nga, Amal El Fallah Seghrouchni, Cedric Herpson.
+  
+  This file is part of tATAmI-Android.
+  
+  tATAmI-Android is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.
+  
+  tATAmI-Android is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
+  
+  You should have received a copy of the GNU Lesser General Public License along with tATAmI-Android.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:background="@drawable/background">
+
+	<TabHost android:id="@+id/tabs" android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		<LinearLayout android:orientation="vertical"
+			android:layout_height="fill_parent" android:layout_width="fill_parent">
+
+			<TabWidget android:id="@android:id/tabs"
+				android:layout_width="fill_parent" android:layout_height="wrap_content" />
+
+			<FrameLayout android:id="@android:id/tabcontent"
+				android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+				<TableLayout android:id="@+id/connectionTab"
+					android:layout_height="wrap_content" android:layout_width="fill_parent"
+					android:stretchColumns="1" android:layout_gravity="center_vertical">
+
+					<TableRow>
+						<TextView android:text="@string/container_label"
+							android:textStyle="bold" android:gravity="right" android:padding="3dip"
+							android:textColor="#FF000000" />
+
+						<EditText android:id="@+id/container" android:text="@string/default_container"
+							android:padding="3dip" android:scrollHorizontally="true" />
+					</TableRow>
+
+					<TableRow>
+						<TextView android:text="@string/host_label"
+							android:textStyle="bold" android:gravity="right" android:padding="3dip"
+							android:textColor="#FF000000" />
+
+						<EditText android:id="@+id/host" android:text="@string/default_host"
+							android:padding="3dip" android:scrollHorizontally="true" />
+					</TableRow>
+
+					<TableRow>
+						<TextView android:text="@string/port_label"
+							android:textStyle="bold" android:gravity="right" android:padding="3dip"
+							android:textColor="#FF000000" />
+
+						<EditText android:id="@+id/port" android:text="@string/default_port"
+							android:padding="3dip" android:scrollHorizontally="true" />
+					</TableRow>
+
+					<TableRow>
+						<TextView android:text="@string/localhost_label"
+							android:textStyle="bold" android:gravity="right" android:padding="3dip"
+							android:textColor="#FF000000" />
+
+						<EditText android:id="@+id/local_host" android:text="@string/local_host"
+							android:padding="3dip" android:scrollHorizontally="true" />
+					</TableRow>
+
+					<TableRow>
+						<TextView android:text="@string/localport_label"
+							android:textStyle="bold" android:gravity="right" android:padding="3dip"
+							android:textColor="#FF000000" />
+
+						<EditText android:id="@+id/local_port" android:text="@string/local_port"
+							android:padding="3dip" android:scrollHorizontally="true" />
+					</TableRow>
+
+					<TableRow>
+
+						<Button android:id="@+id/connect" android:text="@string/connect_button" />
+
+						<Button android:id="@+id/disconnect" android:text="@string/disconnect_button"
+							android:enabled="false" />
+					</TableRow>
+				</TableLayout>
+
+				<LinearLayout android:id="@+id/logTab"
+					android:orientation="vertical" android:layout_width="fill_parent"
+					android:layout_height="fill_parent">
+
+					<ScrollView android:id="@+id/logScroll" 
+						android:layout_width="fill_parent"
+						android:layout_height="fill_parent">
+
+						<TextView android:id="@+id/logScreen"
+							android:layout_width="wrap_content" android:layout_height="wrap_content"
+							android:scrollHorizontally="false" android:paddingTop="10px"
+							android:paddingBottom="10px" android:paddingLeft="25px"
+							android:paddingRight="25px" android:textColor="#FF000000" />
+
+					</ScrollView>
+				</LinearLayout>
+
+				<LinearLayout android:id="@+id/agentsTab"
+					android:orientation="vertical" android:layout_width="fill_parent"
+					android:layout_height="fill_parent">
+
+					<LinearLayout android:id="@+id/agentsControl"
+					android:orientation="horizontal" android:layout_width="fill_parent"
+					android:layout_height="wrap_content">
+
+				    	<LinearLayout android:layout_width="wrap_content"
+							android:layout_height="wrap_content">
+						   	<Button android:id="@+id/showAgent" android:text="@string/show_agent" 
+						   	    android:layout_width="wrap_content" android:layout_height="wrap_content"
+								android:enabled="false" />
+						</LinearLayout>
+					    						    
+					    <Spinner android:id="@+id/agentsList" android:drawSelectorOnTop="true" 
+				    	    android:layout_width="fill_parent" android:layout_height="wrap_content"/>
+	
+					</LinearLayout>
+
+					    <ScrollView android:id="@+id/agentsLogScroll" 
+						android:layout_width="fill_parent"
+						android:layout_height="fill_parent">
+
+						<LinearLayout android:id="@+id/agentsGuiSlot"
+							android:orientation="vertical" android:layout_width="fill_parent"
+							android:layout_height="fill_parent">
+
+						    <!--<TextView android:id="@+id/agentsLogScreen"
+								android:layout_width="wrap_content" android:layout_height="wrap_content"
+								android:scrollHorizontally="false" android:paddingTop="10px"
+								android:paddingBottom="10px" android:paddingLeft="25px"
+								android:paddingRight="25px" android:textColor="#FF000000" /> -->
+							
+						</LinearLayout>
+
+					</ScrollView>
+
+				</LinearLayout>
+
+			</FrameLayout>
+
+		</LinearLayout>
+
+	</TabHost>
+
+</LinearLayout>

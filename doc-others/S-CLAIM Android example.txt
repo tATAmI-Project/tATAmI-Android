@@ -1,0 +1,28 @@
+#-------------------------------------------------------------------------------
+# Copyright (C) 2013 Andrei Olaru, Marius-Tudor Benea, Nguyen Thi Thuy Nga, Amal El Fallah Seghrouchni, Cedric Herpson.
+# 
+# This file is part of tATAmI-Android.
+# 
+# tATAmI-Android is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.
+# 
+# tATAmI-Android is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
+# 
+# You should have received a copy of the GNU Lesser General Public License along with tATAmI-Android.  If not, see <http://www.gnu.org/licenses/>.
+#-------------------------------------------------------------------------------
+In this document it is shown how to run a S-CLAIM scenario on a network of devices that includes some Android devices. In order to do this, we've created a specific scenario. It is specified in the file scenario/phase2-android/scenario_2_for_android.xml of the AoDai-Jade project.
+
+To run the example, the class simulation.Boot of the AoDai-Jade project should be run with the following program argument: scenario/phase2-android/scenario_2_for_android.xml. It should be verified if the parameter "localIPaddress" in the scenario file is set to the IP of the machine where the main container will be run.
+
+S-CLAIM should be run on 2 Android devices. We could start by connecting two Android emulators to the S-CLAIM platform. In order to connect them, the steps that could be found in the file "doc/User manual.txt" should be followed.
+
+After the two emulators started, supposing that the S-CLAIM platform already runs on the local computer, we will need to forward some ports toward the emulators and then to connect them to the platform. We could forward the port that already appears in the Claim2 Android interface, namely 1098. In order to do this, considering that we have two emulators, we will need to see their serial numbers, using the command: 
+	adb devices
+Then we have to forward the specified port toward the two emulators, using the command:
+	adb -s <emulator's serial number (of the form emulator-5556)> forward tcp:<desired-port> tcp:<desired-port>
+for each emulator's instance. We could forward, for example, the ports 1098 and 1097 toward the android emulators.
+
+Now, we have to rename the containers, so that one emulator instance should run the "AliceContainer" container and the other the "BobContainer" container.
+
+The "Connect" button should be pressed for both emulators.
+
+Now the agents could be created and the simulation could start. 
