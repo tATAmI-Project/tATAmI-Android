@@ -10,6 +10,8 @@
 # You should have received a copy of the GNU Lesser General Public License along with tATAmI-Android.  If not, see <http://www.gnu.org/licenses/>.
 #-------------------------------------------------------------------------------
 Compiling
+  - be sure to have JDK 6 installed, with JRE 6 configured in Eclipse -> Window -> Preferences -> Java -> Installed JREs, with the name "jre6".
+  (this is because Android development supports only Java 6)
   - ant-run importer.xml
   - refresh project
 
