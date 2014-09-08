@@ -1,24 +1,24 @@
 /*******************************************************************************
  * Copyright (C) 2013 Andrei Olaru, Marius-Tudor Benea, Nguyen Thi Thuy Nga, Amal El Fallah Seghrouchni, Cedric Herpson.
  * 
- * This file is part of tATAmI-Android.
+ * This file is part of tATAmI-PC.
  * 
- * tATAmI-Android is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.
+ * tATAmI-PC is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.
  * 
- * tATAmI-Android is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
+ * tATAmI-PC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
  * 
- * You should have received a copy of the GNU Lesser General Public License along with tATAmI-Android.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License along with tATAmI-PC.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package tatami.core.agent.claim;
 
 import java.util.Map;
 import java.util.Vector;
 
-import tatami.core.agent.claim.parser.ClaimAgentDefinition;
-import tatami.core.agent.claim.parser.ClaimBehaviorDefinition;
-import tatami.core.agent.claim.parser.ClaimBehaviorType;
-import tatami.core.agent.claim.parser.ClaimValue;
-import tatami.core.agent.claim.parser.ClaimVariable;
+import sclaim.constructs.basic.ClaimAgentDefinition;
+import sclaim.constructs.basic.ClaimBehaviorDefinition;
+import sclaim.constructs.basic.ClaimBehaviorType;
+import sclaim.constructs.basic.ClaimValue;
+import sclaim.constructs.basic.ClaimVariable;
 import tatami.core.agent.hierarchical.HierarchicalAgent;
 import tatami.core.interfaces.KnowledgeBase;
 
@@ -31,7 +31,7 @@ public class ClaimAgent extends HierarchicalAgent
 	 * The agent definition describing this agent.
 	 */
 	protected ClaimAgentDefinition	cad;
-	
+	protected SymbolTable st;
 	/**
 	 * The list of behaviors of the agent.
 	 */
@@ -52,7 +52,9 @@ public class ClaimAgent extends HierarchicalAgent
 			throw new IllegalArgumentException("agent definition not found");
 		}
 		
-		cad.getSymbolTable().setLog(log);
+		st = new SymbolTable(null, cad.getParameters());
+		
+		st.setLog(log);
 		
 		// retrieve claim agent definition
 		if(cad.getParameters() != null)
@@ -64,11 +66,11 @@ public class ClaimAgent extends HierarchicalAgent
 				if(registeredParam != null)
 				{
 					if(hasPar(registeredParam))
-						this.cad.getSymbolTable().put(agentParam, new ClaimValue(parObj(registeredParam)));
+						this.st.put(agentParam, new ClaimValue(parObj(registeredParam)));
 					else
 					{
 						if(agentParam.getName().equals("parent"))
-							cad.getSymbolTable().put(new ClaimVariable("parent", true), null);
+							st.put(new ClaimVariable("parent", true), null);
 						else
 							log.error("registered agent parameter [" + agentParam + "] not found");
 					}
@@ -76,7 +78,7 @@ public class ClaimAgent extends HierarchicalAgent
 				else
 				{
 					if(claimParams.containsKey(agentParam.getName()))
-						this.cad.getSymbolTable()
+						this.st
 								.put(agentParam, new ClaimValue(claimParams.get(agentParam.getName())));
 					else if(!agentParam.getName().equals("this"))
 						log.error("agent parameter [" + agentParam + "] not found");
@@ -85,7 +87,7 @@ public class ClaimAgent extends HierarchicalAgent
 		}
 		
 		// bind value for "this" parameter (agent's local name)
-		this.cad.getSymbolTable().put(new ClaimVariable("this"), new ClaimValue(this.getLocalName()));
+		this.st.put(new ClaimVariable("this"), new ClaimValue(this.getLocalName()));
 		
 		try
 		{
@@ -98,7 +100,7 @@ public class ClaimAgent extends HierarchicalAgent
 		for(int i = 0; i < this.cad.getBehaviors().size(); i++)
 		{
 			ClaimBehaviorDefinition cbd = this.cad.getBehaviors().get(i);
-			ClaimBehavior cb = new ClaimBehavior(cbd);
+			ClaimBehavior cb = new ClaimBehavior(cbd,st);
 			addBehaviour(cb);
 			behaviors.add(cb);
 			
@@ -115,6 +117,10 @@ public class ClaimAgent extends HierarchicalAgent
 		}
 	}
 	
+	public SymbolTable getSt() {
+		return st;
+	}
+
 	/**
 	 * Allows access to the agent's knowledge base from this package (e.g. for {@link ClaimBehavior}).
 	 * 

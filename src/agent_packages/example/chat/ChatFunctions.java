@@ -15,7 +15,7 @@ package agent_packages.example.chat;
 import java.util.Vector;
 
 import tatami.core.agent.claim.ClaimFunctionLibrary;
-import tatami.core.agent.claim.parser.ClaimValue;
+import sclaim.constructs.basic.ClaimValue;
 
 
 public class ChatFunctions implements ClaimFunctionLibrary
