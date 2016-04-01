@@ -18,6 +18,8 @@ import com.tatami.tatami_android.core.agent.parametric.AgentParameters;
 import com.tatami.tatami_android.core.util.platformUtils.PlatformUtils;
 
 import XML.XMLTree;
+import components.dev.mobility.ComponentFactory;
+
 import net.xqhs.util.config.Config;
 import net.xqhs.util.logging.LoggerSimple;
 import net.xqhs.util.logging.UnitComponentExt;
@@ -201,9 +203,12 @@ public class Boot
                 if(platformClassPath != null)
                     try
                     {
+                        platforms.put(platformName, ComponentFactory.getInst().getPlatform(platformName, new Object[0]).setConfig(platformNode, settings));
+                        /*
                         platforms.put(platformName, ((PlatformLoader) PlatformUtils.loadClassInstance(this,
                                 platformClassPath, new Object[0])).setConfig(platformNode, settings));
-                        log.info("Platform [" + platformName + "] prepared.");
+                                */
+                        Log.i("Boot.java", "Platform [" + platformName + "] prepared.");
                     } catch(Exception e)
                     {
                         Log.e("Boot.java", "Loading platform [" + platformName + "] failed; platform will not be available:"
@@ -222,7 +227,7 @@ public class Boot
                 platforms
                         .put(platform.toString(), ((PlatformLoader) PlatformUtils.loadClassInstance(this,
                                 platform.getClassName(), new Object[0])));
-                log.info("Default platform [" + platform.toString() + "] prepared.");
+                Log.i("Boot.java", "Default platform [" + platform.toString() + "] prepared.");
             } catch(Exception e)
             {
                 Log.e("Boot.java", "Loading platform [" + platform.toString() + "] failed; platform will not be available:"
@@ -278,7 +283,7 @@ public class Boot
                     {
                         agentLoaders.put(loaderName, ((AgentLoader) PlatformUtils.loadClassInstance(this,
                                 loaderClassPath, new Object[0])).setConfig(loaderNode));
-                        log.info("Agent loader [" + loaderName + "] prepared.");
+                        Log.i("Boot.java", "Agent loader [" + loaderName + "] prepared.");
                     } catch(Exception e)
                     {
                         Log.e("Boot.java", "Loading agent loader [" + loaderName + "] failed; loader will not be available: "
@@ -295,7 +300,7 @@ public class Boot
                 {
                     agentLoaders.put(loader.toString(),
                             (AgentLoader) PlatformUtils.loadClassInstance(this, loader.getClassName()));
-                    log.info("Agent loader [" + loader.toString() + "] prepared.");
+                    Log.i("Boot.java", "Agent loader [" + loader.toString() + "] prepared.");
                 } catch(Exception e)
                 {
                     Log.e("Boot.java", "Loading agent loader [" + loader.toString() + "] failed; loader will not be available: "
@@ -497,7 +502,7 @@ public class Boot
                 itP.remove();
                 continue;
             }
-            log.info("Platform [" + platformName + "] started.");
+            Log.i("Boot.java", "Platform [" + platformName + "] started.");
             platformsOK++;
             if(platformContainers.containsKey(platformName))
                 for(Iterator<String> itC = platformContainers.get(platformName).iterator(); itC.hasNext();)
@@ -509,7 +514,7 @@ public class Boot
                         itC.remove();
                     }
                     else
-                        log.info("Container [" + containerName + "] added to [" + platformName + "].");
+                        Log.i("Boot.java", "Container [" + containerName + "] added to [" + platformName + "].");
                 }
         }
         return platformsOK;

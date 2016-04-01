@@ -11,6 +11,8 @@
  ******************************************************************************/
 package com.tatami.tatami_android.websocket;
 
+import android.util.Log;
+
 import com.tatami.tatami_android.core.agent.AgentComponent;
 import com.tatami.tatami_android.core.agent.AgentEvent;
 import com.tatami.tatami_android.core.agent.CompositeAgent;
@@ -168,16 +170,16 @@ public class WebSocketMessagingPlatform implements PlatformLoader, PlatformLoade
 			{
 				mServer = new AutobahnServer(mPort, new Draft_17());
 				mServer.start();
-				log.info("Communication server started");
+				Log.i("WebsocketMessaging", "Communication server started");
 			} catch(UnknownHostException e)
 			{
-				log.error("Communication server could not be started");
+				Log.e("WebsocketMessaging", "Communication server could not be started");
 				e.printStackTrace();
 			}
-			
+
 		}
-		
-		
+
+
 
 		if((componentType & CLIENT) == CLIENT)
 		{
@@ -193,15 +195,15 @@ public class WebSocketMessagingPlatform implements PlatformLoader, PlatformLoade
 			mClient = new AutobahnClient(d, uri);
 			mClientThread = new Thread(mClient);
 			mClientThread.start();
-			
+
 			boolean serverStarted = false;
 			while (!serverStarted) {
 				try {
 
-					
+
 					mClient.send("::handshake::");
 
-					log.info("Communication client started");
+					Log.i("WebsocketMessaging", "Communication client started");
 					serverStarted = true;
 				} catch (Exception e) {
 					try {
@@ -223,11 +225,11 @@ public class WebSocketMessagingPlatform implements PlatformLoader, PlatformLoade
 			mClient.close();
 			mClientThread.join();
 			log.doExit();
-			log.error("Communication client out: ");
+			Log.e("WebsocketMessaging", "Communication client out: ");
 			return true;
 		} catch(InterruptedException e)
 		{
-			log.error("Communication client could not be stopped: ", e);
+			Log.e("WebsocketMessaging", "Communication client could not be stopped: ", e);
 			log.doExit();
 			return false;
 		}
