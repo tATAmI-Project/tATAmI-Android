@@ -24,7 +24,6 @@
 		<scen:container name="Container">
 			<scen:agent>
 				<scen:component name="parametric" />
-				<scen:component name="visualizable" />
 				<scen:component name="mobility" />
 				<scen:component name="messaging" />
 				<scen:component name="testing"

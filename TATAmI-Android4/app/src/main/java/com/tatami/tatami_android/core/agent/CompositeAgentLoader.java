@@ -23,6 +23,8 @@ import com.tatami.tatami_android.core.util.platformUtils.PlatformUtils;
 import java.util.Iterator;
 
 import XML.XMLTree.XMLNode;
+import components.dev.mobility.ComponentFactory;
+
 import net.xqhs.util.logging.Logger;
 
 /**
@@ -123,7 +125,8 @@ public class CompositeAgentLoader implements AgentLoader
 						+ "]. Component will not be available.");
 				continue;
 			}
-			
+
+			/*
 			if(PlatformUtils.classExists(componentClass))
 				Log.v("CompositeAgentLoader", logPre + "component [" + componentName + "] can be loaded");
 			else
@@ -132,11 +135,17 @@ public class CompositeAgentLoader implements AgentLoader
 						+ "] not found; it will not be loaded.");
 				continue;
 			}
-			
+
+			*/
+
+			Log.v("CompositeAgentLoader", logPre + "Trying to isntatiate: [" + componentClass + "] can be loaded");
+
 			AgentComponent component = null;
 			try
 			{
-				component = (AgentComponent) PlatformUtils.loadClassInstance(this, componentClass, new Object[0]);
+				//component = (AgentComponent) PlatformUtils.loadClassInstance(this, componentClass, new Object[0]);
+
+				component = ComponentFactory.getInst().getComponent(componentClass, new Object[0]);
 				Log.v("CompositeAgentLoader", "component [] created for agent []. pre-loading..." +  componentClass +  agentCreationData.getAgentName());
 			} catch(Exception e)
 			{
@@ -156,7 +165,10 @@ public class CompositeAgentLoader implements AgentLoader
 			if(AgentComponent.AgentComponentName.PARAMETRIC_COMPONENT.componentName().equals(componentName))
 				componentData
 						.addObject(ParametricComponent.COMPONENT_PARAMETER_NAME, agentCreationData.getParameters());
-			
+
+			if(component == null){
+				Log.v("smth", "==========================");
+			}
 			if(component.preload(componentData, componentNode, agentCreationData.getPackages()))
 			{
 				agentCreationData.getParameters().addObject(COMPONENT_PARAMETER_NAME, component);
