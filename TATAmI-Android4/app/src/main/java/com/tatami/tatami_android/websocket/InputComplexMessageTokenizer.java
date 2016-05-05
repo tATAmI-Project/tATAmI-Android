@@ -1,9 +1,10 @@
 package com.tatami.tatami_android.websocket;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import net.xqhs.util.logging.Logger;
 
 public class InputComplexMessageTokenizer{
 
@@ -17,7 +18,7 @@ public class InputComplexMessageTokenizer{
 	
 	int mCount = 0;
 	
-	public InputComplexMessageTokenizer(byte[] rawObject, Logger log){
+	public InputComplexMessageTokenizer(byte[] rawObject){
 		String rawString  = getByteArrayAsString(rawObject);
 		packs = new ArrayList<String>();
 		System.out.println(rawString);
@@ -32,7 +33,7 @@ public class InputComplexMessageTokenizer{
 		}
 		
 		mCount = packs.size();
-		log.trace("Message splited into ", mCount);
+		Log.v("messaging", "Message splited into " + mCount);
 		
 	}
 	

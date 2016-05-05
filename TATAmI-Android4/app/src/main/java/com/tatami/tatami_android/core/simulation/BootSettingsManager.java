@@ -23,8 +23,6 @@ import XML.XMLParser;
 import XML.XMLTree;
 import XML.XMLTree.XMLNode;
 import net.xqhs.util.config.Config;
-import net.xqhs.util.logging.UnitComponentExt;
-import net.xqhs.windowLayout.grid.GridLayoutIndications;
 
 /**
  * This class manages settings for simulations. It handles loading these settings from various sources --
@@ -123,7 +121,7 @@ public class BootSettingsManager extends Config
 	/**
 	 * The window layout indications, for PC platforms.
 	 */
-	protected GridLayoutIndications	layout;
+	//protected GridLayoutIndications	layout;
 	
 	@Override
 	public BootSettingsManager makeDefaults()
@@ -139,7 +137,7 @@ public class BootSettingsManager extends Config
 		
 		applicationLayoutWidth = BootDefaultArguments.applicationLayoutWidth;
 		applicationLayoutHeight = BootDefaultArguments.applicationLayoutHeight;
-		layout = BootDefaultArguments.layout;
+		//layout = BootDefaultArguments.layout;
 		
 		return (BootSettingsManager) super.makeDefaults();
 	}
@@ -171,14 +169,15 @@ public class BootSettingsManager extends Config
 	public XMLTree load(String programArguments[], boolean parseScenarioFile) throws ConfigLockedException
 	{
 		locked();
-		
+		/*
 		UnitComponentExt log = (UnitComponentExt) new UnitComponentExt().setUnitName("settings load").setLoggerType(
 				PlatformUtils.platformLogType());
+				*/
 		
 		switch(programArguments.length)
 		{
 		default:
-			log.warn("too many arguments; additional arguments ignored.");
+			Log.w("boot", "too many arguments; additional arguments ignored.");
 			//$FALL-THROUGH$
 		case 8:
 			if(!"null".equals(programArguments[7]))
@@ -189,7 +188,7 @@ public class BootSettingsManager extends Config
 			//$FALL-THROUGH$
 		case 6:
 			if(programArguments.length == 6)
-				log.warn("incorrect number of arguments");
+				Log.w("boot", "incorrect number of arguments");
 			applicationLayoutWidth = Integer.parseInt(programArguments[5]);
 			//$FALL-THROUGH$
 		case 5:
@@ -279,14 +278,15 @@ public class BootSettingsManager extends Config
                 mainPort == null ? "<null>" : mainPort + localHost == null ? "<null>" : localHost+
                 localPort == null ? "<null>" : localPort);
         Log.i("BootSettingsManager", "local container: []" + ((localContainerName == null) ? "<null>" : localContainerName));
-		
+
+		/*
 		if(applicationLayoutWidth > 0)
 			layout.indicateW(applicationLayoutWidth);
 		if(applicationLayoutHeight > 0)
 			layout.indicateH(applicationLayoutHeight);
+			*/
 		Log.i("BootSettingsManager", "screen setup: []" + applicationLayoutWidth + "x" + applicationLayoutHeight);
-		
-		log.doExit();
+
 		lock();
 		return scenarioTree;
 	}
@@ -358,8 +358,9 @@ public class BootSettingsManager extends Config
 	/**
 	 * @return the layout
 	 */
-	public GridLayoutIndications getLayout()
+	/*public GridLayoutIndications getLayout()
 	{
 		return layout;
 	}
+	*/
 }

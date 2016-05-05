@@ -14,7 +14,6 @@ package com.tatami.tatami_android.core.simulation;
 import com.tatami.tatami_android.core.agent.CompositeAgentLoader;
 
 import XML.XMLTree.XMLNode;
-import net.xqhs.util.logging.Logger;
 /**
  * The agent loader is the interface to an instance that uses existing scenario information to completely specify
  * loading information for an agent.

@@ -13,8 +13,8 @@
 <scen:scenario xmlns:scen="http://www.example.org/scenarioSchema3"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-	<scen:config mainHost="server client" mainPort="9009"
-		localHost="127.0.0.1" localPort="9009" />
+	<scen:config mainHost="server client" mainPort="9008"
+		localHost="127.0.0.1" localPort="9008" />
 
 	<scen:platform>
 		<scen:parameter name="name" value="websocket" />
@@ -24,6 +24,7 @@
 		<scen:container name="Container">
 			<scen:agent>
 				<scen:component name="parametric" />
+				<scen:component name="control" />
 				<scen:component name="mobility" />
 				<scen:component name="messaging" />
 				<scen:component name="testing"

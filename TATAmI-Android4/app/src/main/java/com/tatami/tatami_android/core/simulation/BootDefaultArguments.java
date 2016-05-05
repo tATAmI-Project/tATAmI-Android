@@ -11,10 +11,7 @@
  ******************************************************************************/
 package com.tatami.tatami_android.core.simulation;
 
-import com.tatami.tatami_android.core.agent.visualisation.AgentGuiConfig;
 
-import net.xqhs.windowLayout.LayoutIndications.BarPosition;
-import net.xqhs.windowLayout.grid.GridLayoutIndications;
 
 /**
  * This class traditionally contains settings for simulations, in order to decouple it from Boot (making it easy to
@@ -75,6 +72,6 @@ public class BootDefaultArguments
 	/**
 	 * The layout indications for the PC application.
 	 */
-	static GridLayoutIndications	layout					= (GridLayoutIndications) new GridLayoutIndications(15, 10);
+	//static GridLayoutIndications	layout					= (GridLayoutIndications) new GridLayoutIndications(15, 10);
 																
 }

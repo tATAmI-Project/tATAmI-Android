@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.Vector;
 
 import XML.XMLTree.XMLNode;
-import net.xqhs.util.logging.logging.LogWrapper;
 
 /**
  * Platform-related functionality. All functions should be static.
@@ -86,6 +85,7 @@ public class PlatformUtils
 	/**
 	 * @return the type of log (on of {@link LoggerType}) appropriate for the current platform.
 	 */
+	/*
 	public static LogWrapper.LoggerType platformLogType()
 	{
 		switch(getPlatform())
@@ -98,7 +98,7 @@ public class PlatformUtils
 		}
 		return null;
 	}
-	
+	*/
 	/**
 	 * @return the name of the class implementing {@link JadeInterface} that is appropriate to use for the current
 	 *         platform.

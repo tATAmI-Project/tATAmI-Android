@@ -12,6 +12,8 @@
 package com.tatami.tatami_android.core.agent.mobility;
 
 
+import android.util.Log;
+
 import com.tatami.tatami_android.core.agent.AgentComponent;
 import com.tatami.tatami_android.core.agent.AgentEvent;
 import com.tatami.tatami_android.core.agent.CompositeAgent;
@@ -39,7 +41,7 @@ public class MobilityComponent extends AgentComponent
 	
 	public boolean move(String nodeName)
 	{
-		getAgentLog().lf("===============================" + getAgentName());
+		Log.v("mobility", "===============================" + getAgentName());
 		// TODO notify platform (in an extension of this class) that this agent is going to move to nodeName
 		postAgentEvent((AgentEvent) new AgentEvent(AgentEvent.AgentEventType.AGENT_STOP)
 				.add(CompositeAgent.TRANSIENT_EVENT_PARAMETER, null).add(DESTINATION_PARAMETER, nodeName));

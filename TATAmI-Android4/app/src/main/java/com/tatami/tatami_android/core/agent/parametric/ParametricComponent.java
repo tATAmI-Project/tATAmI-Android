@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.List;
 
 import XML.XMLTree.XMLNode;
-import net.xqhs.util.logging.Logger;
 /**
  * This basic component of the agent handles agent parameters.
  * <p>

@@ -44,7 +44,6 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import XML.XMLTree.XMLNode;
 import XML.XMLTree.XMLNode.XMLAttribute;
-import net.xqhs.util.logging.Logger;
 
 /**
  * Executes the parsing of an XML file, using the SAX parser. Parsing should be done using one of the provided static
@@ -56,7 +55,7 @@ import net.xqhs.util.logging.Logger;
 public class XMLParser extends DefaultHandler
 {
 	protected String	unitName		= null; // for logging
-	protected Logger	log				= null;
+	//protected Logger	log				= null;
 	
 	private String		schemaFiles[]	= null;
 	private XMLTree		thetree			= null;

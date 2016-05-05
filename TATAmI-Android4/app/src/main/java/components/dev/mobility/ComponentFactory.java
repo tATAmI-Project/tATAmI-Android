@@ -5,6 +5,7 @@ import android.util.Log;
 import com.tatami.tatami_android.core.agent.AgentComponent;
 import com.tatami.tatami_android.core.agent.mobility.MobilityComponent;
 import com.tatami.tatami_android.core.agent.parametric.ParametricComponent;
+import com.tatami.tatami_android.core.control.ControlComponent;
 import com.tatami.tatami_android.core.simulation.PlatformLoader;
 import com.tatami.tatami_android.websocket.WebSocketMessagingComponent;
 import com.tatami.tatami_android.websocket.WebSocketMessagingPlatform;
@@ -17,6 +18,14 @@ public class ComponentFactory {
 
     private static ComponentFactory singleton = null;
 
+    public static final String PARAMETRIC_COMPONENT = "tatami.core.agent.parametric.ParametricComponent";
+    public static final String MOBILITY_COMPONENET = "tatami.core.agent.mobility.MobilityComponent";
+    public static final String WEBSOCKET_COMPONENT = "com.tatami.tatami_android.websocket.WebSocketMessagingComponent";
+    public static final String STATE_AGENT_COMPONENT = "StateAgentTestComponent";
+    public static final String CONTROL_COMPONENT = "tatami.core.agentcontrol.ControlComponent";
+
+    public static final String PLATFORM_WEBSOCKET_MESSAGING = "websocket";
+
     private ComponentFactory(){
 
     }
@@ -28,13 +37,7 @@ public class ComponentFactory {
         return singleton;
     }
 
-    public static final String PARAMETRIC_COMPONENT = "tatami.core.agent.parametric.ParametricComponent";
-    public static final String MOBILITY_COMPONENET = "tatami.core.agent.mobility.MobilityComponent";
-    public static final String WEBSOCKET_COMPONENT = "com.tatami.tatami_android.websocket.WebSocketMessagingComponent";
 
-    public static final String STATE_AGENT_COMPONENT = "StateAgentTestComponent";
-
-    public static final String PLATFORM_WEBSOCKET_MESSAGING = "websocket";
 
 
     public AgentComponent getComponent(String className, Object... arg){
@@ -57,6 +60,13 @@ public class ComponentFactory {
             Log.v("smth", "Parametric component");
             return new StateAgentTestComponent();
         }
+
+        if(className.compareTo(CONTROL_COMPONENT) == 0){
+            Log.v("smth", "Parametric component");
+            return new ControlComponent();
+        }
+
+        Log.e("smth", "Error loading component " + className);
 
         return null;
     }

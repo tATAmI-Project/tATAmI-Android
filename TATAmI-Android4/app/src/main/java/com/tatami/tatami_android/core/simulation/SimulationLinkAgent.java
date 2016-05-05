@@ -11,17 +11,17 @@
  ******************************************************************************/
 package com.tatami.tatami_android.core.simulation;
 
+import android.util.Log;
+
 import com.tatami.tatami_android.core.agent.AgentComponent;
 import com.tatami.tatami_android.core.agent.AgentEvent;
 import com.tatami.tatami_android.core.agent.CompositeAgent;
 import com.tatami.tatami_android.core.agent.messaging.MessagingComponent;
-import com.tatami.tatami_android.core.agent.visualisation.VisualizableComponent;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.xqhs.util.logging.Logger;
 /**
  * In order to be able to communicate with other agents in a platform, the {@link SimulationManager} keeps an agent on
  * each of the available platforms, in order to relay events and control messages to the agents.
@@ -57,7 +57,7 @@ public class SimulationLinkAgent extends CompositeAgent
 	public SimulationLinkAgent(String agentName, MessagingComponent messaging)
 	{
 		name = agentName;
-		addComponent(new VisualizableComponent());
+		//addComponent(new VisualizableComponent());
 		if(messaging != null)
 			addComponent(messaging);
 	}
@@ -79,25 +79,27 @@ public class SimulationLinkAgent extends CompositeAgent
 	 */
 	public boolean enrol(AgentCreationData agentData)
 	{
-		Logger log = ((VisualizableComponent) getComponent(AgentComponent.AgentComponentName.VISUALIZABLE_COMPONENT)).getLog();
+		//Logger log = ((VisualizableComponent) getComponent(AgentComponent.AgentComponentName.VISUALIZABLE_COMPONENT)).getLog();
 		MessagingComponent msgComp = (MessagingComponent) getComponent(AgentComponent.AgentComponentName.MESSAGING_COMPONENT);
 		if(msgComp == null)
 		{
-			log.error("Messaging component not present");
+			Log.e("core", "Messaging component not present");
 			return false;
 		}
-		String target = msgComp.makePath(agentData.getAgentName(), VisualizableComponent.Vocabulary.VISUALIZATION.toString(),
-				VisualizableComponent.Vocabulary.VISUALIZATION_MONITOR.toString());
-		log.trace("Sending enrollment message to [].", target);
+		//String target = msgComp.makePath(agentData.getAgentName(), VisualizableComponent.Vocabulary.VISUALIZATION.toString(),
+				//VisualizableComponent.Vocabulary.VISUALIZATION_MONITOR.toString());
+		//Log.v("core", "Sending enrollment message to []." + target);
+		/*
 		if(!msgComp.sendMessage(target, msgComp.getAgentAddress(), msgComp.getAgentAddress()))
 		{
-			log.error("Sending of enrollment message to agent [" + agentData.getAgentName() + "] failed");
+			Log.e("core", "Sending of enrollment message to agent [" + agentData.getAgentName() + "] failed");
 			return false;
 		}
+		*/
 		agents.add(agentData.getAgentName());
 		return true;
 	}
-	
+
 	/**
 	 * Sends an message to all agents that are monitored by this agent, indicating an agent event to be posted.
 	 * 
@@ -108,24 +110,26 @@ public class SimulationLinkAgent extends CompositeAgent
 	 */
 	public boolean broadcast(AgentEvent.AgentEventType event)
 	{
-		Logger log = ((VisualizableComponent) getComponent(AgentComponent.AgentComponentName.VISUALIZABLE_COMPONENT)).getLog();
+		//Logger log = ((VisualizableComponent) getComponent(AgentComponent.AgentComponentName.VISUALIZABLE_COMPONENT)).getLog();
 		MessagingComponent msgComp = (MessagingComponent) getComponent(AgentComponent.AgentComponentName.MESSAGING_COMPONENT);
 		if(msgComp == null)
 		{
-			log.error("Messaging component not present");
+			Log.e("core", "Messaging component not present");
 			return false;
 		}
-		
+
+
 		boolean ret = true;
 		for(String agent : agents)
 		{
-			String target = msgComp.makePath(agent, VisualizableComponent.Vocabulary.VISUALIZATION.toString(), VisualizableComponent.Vocabulary.CONTROL.toString());
+			String target = msgComp.makePath(agent, "CONTROL", "CONTROL");
 			if(!msgComp.sendMessage(target, msgComp.getAgentAddress(), event.toString()))
 			{
-				log.error("Sending of exit message to [" + target + "] failed");
+				Log.e("core", "Sending of exit message to [" + target + "] failed");
 				ret = false;
 			}
 		}
-		return ret;
+
+		return true;
 	}
 }

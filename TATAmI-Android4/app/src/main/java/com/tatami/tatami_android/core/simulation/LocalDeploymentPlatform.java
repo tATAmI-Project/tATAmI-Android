@@ -11,6 +11,8 @@
  ******************************************************************************/
 package com.tatami.tatami_android.core.simulation;
 
+import android.util.Log;
+
 import com.tatami.tatami_android.core.agent.AgentComponent;
 import com.tatami.tatami_android.core.agent.AgentEvent;
 import com.tatami.tatami_android.core.agent.messaging.NameBasedMessagingComponent;
@@ -78,7 +80,7 @@ public class LocalDeploymentPlatform extends DefaultPlatform implements Platform
 			else
 				try
 				{
-					getAgentLog().error("No messaging component registered for name [].", targetElements[0]);
+					Log.e("core", "No messaging component registered for name []." + targetElements[0]);
 				} catch(NullPointerException e)
 				{
 					// nothing
@@ -94,7 +96,7 @@ public class LocalDeploymentPlatform extends DefaultPlatform implements Platform
 				throw new IllegalStateException("Platform Link is not of expected type");
 			try
 			{
-				getAgentLog().dbg(MessagingDebug.DEBUG_MESSAGING, "Registered with platform.");
+				Log.d("core", "Registered with platform.");
 			} catch(NullPointerException e)
 			{
 				// nothing

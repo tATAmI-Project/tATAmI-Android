@@ -11,14 +11,15 @@
  ******************************************************************************/
 package com.tatami.tatami_android.core.simulation;
 
+import android.util.Log;
+
 import com.tatami.tatami_android.core.agent.AgentComponent;
 import com.tatami.tatami_android.core.agent.AgentEvent;
 import com.tatami.tatami_android.core.agent.io.AgentActiveIO;
 import com.tatami.tatami_android.core.agent.messaging.MessagingComponent;
-import com.tatami.tatami_android.core.agent.visualisation.AgentGui;
-import com.tatami.tatami_android.core.agent.visualisation.AgentGuiConfig;
 import com.tatami.tatami_android.core.util.platformUtils.PlatformUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,8 +33,6 @@ import java.util.TimerTask;
 import java.util.Vector;
 
 import XML.XMLTree.XMLNode;
-import net.xqhs.util.logging.UnitComponentExt;
-import net.xqhs.windowLayout.WindowLayout;
 
 /**
  * Singleton class managing the simulation, visualization and agent control on a machine or on a set of machines
@@ -135,11 +134,11 @@ public class SimulationManager implements AgentManager
 	/**
 	 * The log.
 	 */
-	UnitComponentExt					log								= null;
+	//UnitComponentExt					log								= null;
 	/**
 	 * The GUI.
 	 */
-	AgentGui gui								= null;
+	//AgentGui gui								= null;
 	
 	/**
 	 * Name and {@link PlatformLoader} for all platforms to be started.
@@ -193,9 +192,10 @@ public class SimulationManager implements AgentManager
 	 */
 	public SimulationManager(Map<String, PlatformLoader> allPlatforms, Map<String, Boolean> allContainers,
 			Set<AgentCreationData> allAgents, XMLNode timeline)
-	{
+	{/*
 		log = (UnitComponentExt) new UnitComponentExt().setUnitName("simulation").setLoggerType(
 				PlatformUtils.platformLogType());
+				*/
 		platforms = allPlatforms;
 		containers = allContainers;
 		agents = allAgents;
@@ -209,7 +209,8 @@ public class SimulationManager implements AgentManager
 	@Override
 	public boolean start()
 	{
-		return startSystem();
+		Log.v("smth", "Simulation started");
+        return startSystem();
 	}
 	
 	/**
@@ -218,14 +219,14 @@ public class SimulationManager implements AgentManager
 	 * @return <code>true</code> in case of success.
 	 */
 	public boolean startSystem()
-	{
+	{/*
 		try
 		{
 			AgentGuiConfig config = new AgentGuiConfig().setWindowType(WINDOW_TYPE).setWindowName(WINDOW_NAME);
 			gui = (AgentGui) PlatformUtils.loadClassInstance(this, PlatformUtils.getSimulationGuiClass(), config);
 		} catch(Exception e)
 		{
-			log.error("Unable to create simulation GUI. Simulation stops here." + PlatformUtils.printException(e));
+			Log.e("core", "Unable to create simulation GUI. Simulation stops here." + PlatformUtils.printException(e));
 			return false;
 		}
 		log.info("Simulation Manager started.");
@@ -235,7 +236,7 @@ public class SimulationManager implements AgentManager
 			fullstop();
 			return false;
 		}
-		
+		*/
 		// starts an agent on each platform
 		if(!startSimulationAgents())
 		{
@@ -251,6 +252,7 @@ public class SimulationManager implements AgentManager
 	 */
 	protected void startTimers()
 	{
+		/*
 		theTime = new Timer();
 		theTime.schedule(new TimerTask() {
 			@Override
@@ -290,6 +292,7 @@ public class SimulationManager implements AgentManager
 				}
 			}
 		}, 0, 100);
+		*/
 	}
 	
 	/**
@@ -299,6 +302,7 @@ public class SimulationManager implements AgentManager
 	 */
 	protected boolean setupGui()
 	{
+		/*
 		gui.connectInput(SimulationComponent.EXIT.toString(), new AgentActiveIO.InputListener() {
 			@Override
 			public void receiveInput(String componentName, Vector<Object> arguments)
@@ -401,7 +405,7 @@ public class SimulationManager implements AgentManager
 				isPaused = !isPaused;
 			}
 		});
-		
+		*/
 		return true;
 	}
 	
@@ -424,27 +428,28 @@ public class SimulationManager implements AgentManager
 				msg = (MessagingComponent) PlatformUtils.loadClassInstance(this, msgrClass, new Object[0]);
 			} catch(Exception e)
 			{
-				log.error("Failed to create a messaging component for the simulation agent on platform []: []",
-						platformName, PlatformUtils.printException(e));
+				Log.e("core", "Failed to create a messaging component for the simulation agent on platform []: []" +
+						platformName +  PlatformUtils.printException(e));
 			}
 			if(msg != null)
 			{
 				SimulationLinkAgent agent = new SimulationLinkAgent(SIMULATION_AGENT_NAME_PREFIX + platformName, msg);
 				if(!platform.loadAgent("Neutral", agent))
 				{
-					log.error("Loading simulation agent on platform [" + platformName
+					Log.e("core", "Loading simulation agent on platform [" + platformName
 							+ "] failed. Simulation cannot start.");
 					agent.stop();
 					return false;
 				}
 				if(!agent.start())
 				{
-					log.error("Starting simulation agent on platform [" + platformName
+					Log.e("core", "Starting simulation agent on platform [" + platformName
 							+ "] failed. Simulation cannot start.");
 					agent.stop();
 					return false;
 				}
 				simulationAgents.put(platformName, agent);
+				Log.v("smth", "::::::::::::" + simulationAgents.size());
 			}
 		}
 		return true;
@@ -464,7 +469,7 @@ public class SimulationManager implements AgentManager
 			String agentName = agentData.getAgentName();
 			if(!platforms.containsKey(agentData.getPlatform()))
 			{
-				log.error("Platform [" + agentData.getPlatform() + "] for agent [" + agentName + "] not found.");
+				Log.e("core", "Platform [" + agentData.getPlatform() + "] for agent [" + agentName + "] not found.");
 				continue;
 			}
 			PlatformLoader platform = platforms.get(agentData.getPlatform());
@@ -478,18 +483,18 @@ public class SimulationManager implements AgentManager
 					if(platform.loadAgent(containerName, manager))
 						agentManagers.put(agentName, manager);
 					else
-						log.error("agent [" + agentName + "] failed to load on platform [" + platform.getName() + "]");
+						Log.e("core", "agent [" + agentName + "] failed to load on platform [" + platform.getName() + "]");
 				else
-					log.error("agent [" + agentName + "] failed to load");
+					Log.e("core", "agent [" + agentName + "] failed to load");
 			}
 			// TODO else: agents in remote containers
 		}
 		for(Entry<String, AgentManager> agent : agentManagers.entrySet())
 		{
 			if(agent.getValue().start())
-				log.info("agent [" + agent.getKey() + "] started.");
+				Log.i("core", "agent [" + agent.getKey() + "] started.");
 			else
-				log.error("agent [" + agent.getKey() + "] failed to start properly.");
+				Log.e("core", "agent [" + agent.getKey() + "] failed to start properly.");
 		}
 		
 		// FIXME add await timeout
@@ -530,6 +535,7 @@ public class SimulationManager implements AgentManager
 	 */
 	protected void signalAllAgents(AgentEvent.AgentEventType event)
 	{
+        Log.v("smth", "Signalling agents to start");
 		for(String platformName : platforms.keySet())
 			if(simulationAgents.containsKey(platformName))
 				simulationAgents.get(platformName).broadcast(event);
@@ -552,16 +558,16 @@ public class SimulationManager implements AgentManager
 			theTime.cancel();
 		for(SimulationLinkAgent simAgent : simulationAgents.values())
 			if(!simAgent.stop())
-				log.error("Stopping agent [] failed.", simAgent.getAgentName());
+				Log.e("core", "Stopping agent [] failed." + simAgent.getAgentName());
 		for(String platformName : platforms.keySet())
 			if(!platforms.get(platformName).stop())
-				log.error("Stopping platform [] failed.", platformName);
-		if(gui != null)
-			gui.close();
+				Log.e("core", "Stopping platform [] failed." + platformName);
+		//if(gui != null)
+		//	gui.close();
+		/*
 		if(WindowLayout.staticLayout != null)
 			WindowLayout.staticLayout.doexit();
-		if(log != null)
-			log.doExit();
+			*/
 		return true;
 	}
 	
@@ -629,4 +635,40 @@ public class SimulationManager implements AgentManager
 		// TODO Auto-generated method stub
 		
 	}
+
+	/**
+	 * Interface exposed to external components
+	 */
+
+	public int getAgentsCount(){
+		if(simulationAgents != null){
+			simulationAgents.size();
+		}
+		return -1;
+	}
+
+	public Vector<String> getAgentsName(){
+		Vector<String> names = new Vector<String>();
+		if(simulationAgents != null){
+			for (Map.Entry<String, SimulationLinkAgent> entry : simulationAgents.entrySet())
+			{
+				names.add(entry.getValue().getAgentName());
+			}
+			return names;
+		}
+		return null;
+	}
+
+
+	public boolean createAgent(){
+		createAgents();
+		return true;
+	}
+
+    public void startAgents(){
+        if(!agentsCreated)
+            createAgents();
+        signalAllAgents(AgentEvent.AgentEventType.SIMULATION_START);
+    }
+
 }

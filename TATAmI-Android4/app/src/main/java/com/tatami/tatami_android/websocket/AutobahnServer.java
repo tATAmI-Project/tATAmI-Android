@@ -11,15 +11,18 @@
  ******************************************************************************/
 package com.tatami.tatami_android.websocket;
 
+import android.util.Log;
+
+import org.java_websocket.WebSocket;
+import org.java_websocket.drafts.Draft;
+import org.java_websocket.handshake.ClientHandshake;
+import org.java_websocket.server.WebSocketServer;
+
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.HashMap;
 
-import main.java.org.java_websocket.WebSocket;
-import main.java.org.java_websocket.drafts.Draft;
-import main.java.org.java_websocket.handshake.ClientHandshake;
-import main.java.org.java_websocket.server.WebSocketServer;
 
 /**
  * Server for WebSocket communication.
@@ -51,6 +54,7 @@ public class AutobahnServer extends WebSocketServer
 	public AutobahnServer(int port, Draft d) throws UnknownHostException
 	{
 		this(new InetSocketAddress(port), d);
+		Log.v("tatami_websockets", "Server instantiated " + getPort() + " " + getAddress().getHostName() + getAddress().getHostString() + getAddress().getAddress().getHostAddress());
 	}
 	
 	/**
@@ -76,7 +80,7 @@ public class AutobahnServer extends WebSocketServer
 	@Override
 	public void onOpen(WebSocket conn, ClientHandshake handshake)
 	{
-		System.out.println("Client is tring to connect");
+		System.out.println("Client is trying to connect");
 		mCounter++;
 	}
 	

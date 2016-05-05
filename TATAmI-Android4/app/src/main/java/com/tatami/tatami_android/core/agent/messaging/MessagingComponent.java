@@ -11,6 +11,8 @@
  ******************************************************************************/
 package com.tatami.tatami_android.core.agent.messaging;
 
+import android.util.Log;
+
 import com.tatami.tatami_android.core.agent.AgentComponent;
 import com.tatami.tatami_android.core.agent.AgentEvent;
 import com.tatami.tatami_android.core.util.platformUtils.PlatformUtils;
@@ -20,7 +22,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.xqhs.util.logging.Debug.DebugItem;
 /**
  * The messaging component should handle all communication between the agent and other agents. Note that the existence
  * of such a component in the {@link CompositeAgent} modifies its behavior: without any messaging component, received
@@ -78,7 +79,7 @@ public abstract class MessagingComponent extends AgentComponent
 	 * 
 	 * @author Andrei Olaru
 	 */
-	public static enum MessagingDebug implements DebugItem {
+	public static enum MessagingDebug {
 		/**
 		 * General messaging debugging switch.
 		 */
@@ -101,8 +102,7 @@ public abstract class MessagingComponent extends AgentComponent
 		{
 			isset = set;
 		}
-		
-		@Override
+
 		public boolean toBool()
 		{
 			return isset;
@@ -183,8 +183,8 @@ public abstract class MessagingComponent extends AgentComponent
 			// should never happen.
 			throw new IllegalStateException("Config locked:" + PlatformUtils.printException(e));
 		}
-		getAgentLog().dbg(MessagingDebug.DEBUG_MESSAGING, "Received message from [] to [] with content [].", source,
-				destination, content);
+		Log.v("messaging", "Received message from [] to [] with content []." + source +
+				destination + content);
 		
 		postAgentEvent(event);
 	}
@@ -205,8 +205,6 @@ public abstract class MessagingComponent extends AgentComponent
 		String destinationInternal = extractInternalDestination(event, "");
 		if(destinationInternal == null)
 		{
-			if(getAgentLog() != null)
-				getAgentLog().error("No internal destination returned for event", event);
 			return;
 		}
 		if(destinationInternal.length() == 0)
@@ -214,13 +212,13 @@ public abstract class MessagingComponent extends AgentComponent
 			destinationInternal = "/";
 		for(Map.Entry<String, Set<AgentEvent.AgentEventHandler>> entry : messageHandlers.entrySet())
 		{
-			getAgentLog().dbg(MessagingDebug.DEBUG_MESSAGING, "Comparing: [] to declared []", destinationInternal,
+			Log.d("messaging", "Comparing: [] to declared []" + destinationInternal +
 					entry.getKey());
 			if(destinationInternal.startsWith(entry.getKey()))
 				// prefix matches
 				for(AgentEvent.AgentEventHandler receiver : entry.getValue())
 				{
-					getAgentLog().dbg(MessagingDebug.DEBUG_MESSAGING, "Dispatching to []", receiver);
+					Log.d("messagin", "Dispatching to []" + receiver);
 					receiver.handleEvent(event);
 				}
 		}
@@ -397,8 +395,6 @@ public abstract class MessagingComponent extends AgentComponent
 	{
 		if(event == null)
 		{
-			if(getAgentLog() != null)
-				getAgentLog().error("Event is null.");
 			return null;
 		}
 		String address = event.get(DESTINATION_PARAMETER);
@@ -406,7 +402,7 @@ public abstract class MessagingComponent extends AgentComponent
 		{
 			try
 			{
-				getAgentLog().error("Address [] does not begin with this agent's address", address);
+				Log.e("messaging", "Address [] does not begin with this agent's address" + address);
 			} catch(NullPointerException e)
 			{
 				// nothing
@@ -418,7 +414,7 @@ public abstract class MessagingComponent extends AgentComponent
 		{
 			try
 			{
-				getAgentLog().warn("Internal path [] does not begin with the specified prefix []", rem, prefixToRemove);
+				Log.w("messaging", "Internal path [] does not begin with the specified prefix []" +  rem + prefixToRemove);
 			} catch(NullPointerException e)
 			{
 				// nothing
@@ -439,8 +435,6 @@ public abstract class MessagingComponent extends AgentComponent
 	{
 		if(event == null)
 		{
-			if(getAgentLog() != null)
-				getAgentLog().error("Event is null.");
 			return null;
 		}
 		String content = event.get(CONTENT_PARAMETER);

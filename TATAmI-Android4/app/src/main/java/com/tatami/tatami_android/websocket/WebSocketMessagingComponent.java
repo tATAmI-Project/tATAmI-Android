@@ -12,6 +12,8 @@
 package com.tatami.tatami_android.websocket;
 
 
+import android.util.Log;
+
 import com.tatami.tatami_android.core.agent.AgentEvent;
 import com.tatami.tatami_android.core.agent.messaging.NameBasedMessagingComponent;
 
@@ -75,7 +77,7 @@ public class WebSocketMessagingComponent extends NameBasedMessagingComponent
 	{
 		try
 		{
-			getAgentLog().dbg(MessagingDebug.DEBUG_MESSAGING,
+			Log.d("messaging",
 					"Seding message: " + source + "::" + target + "::" + content);
 			platform.mClient.send(source + "::" + target + "::" + content);
 			return true;

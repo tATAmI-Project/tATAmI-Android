@@ -1,5 +1,7 @@
 package components.dev.mobility;
 
+import android.util.Log;
+
 import com.tatami.tatami_android.core.agent.AgentComponent;
 import com.tatami.tatami_android.core.agent.AgentEvent;
 import com.tatami.tatami_android.core.agent.CompositeAgent;
@@ -9,9 +11,6 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import net.xqhs.util.logging.Logger;
-import net.xqhs.util.logging.LoggerSimple.Level;
-import net.xqhs.util.logging.UnitComponent;
 /**
  * 
  * @author Yonutix
@@ -41,7 +40,7 @@ public class StateAgentTestComponent extends AgentComponent {
 	/**
 	 * The log.
 	 */
-	transient UnitComponent locallog = null;
+	//transient UnitComponent locallog = null;
 
 	/**
 	 * Cache for the name of this agent.
@@ -71,16 +70,19 @@ public class StateAgentTestComponent extends AgentComponent {
 		 *            The parent of this object
 		 */
 		public MakeStep(StateAgentTestComponent parent) {
+			Log.v("smth", "MakeStep initialized");
 			mParent = parent;
 		}
 
 		@Override
 		public void run() {
 			mSubject++;
-			getAgentLog().lf("Incremented ", mSubject);
+			Log.v("mobility", "Incremented " + mSubject);
+
+			Log.v("smth", "" + mSubject);
 			// Time to move
 			if (mSubject == 10) {
-				mParent.move("OtherContainer");
+				//mParent.move("OtherContainer");
 			}
 
 		}
@@ -90,13 +92,24 @@ public class StateAgentTestComponent extends AgentComponent {
 	 * 
 	 */
 	public StateAgentTestComponent() {
-		super(AgentComponentName.TESTING_COMPONENT);
+
+        super(AgentComponentName.TESTING_COMPONENT);
+		registerHandler(AgentEvent.AgentEventType.AGENT_MESSAGE, new AgentEvent.AgentEventHandler() {
+			@Override
+			public void handleEvent(AgentEvent event)
+			{
+
+			}
+		});
+        Log.v("smth", "StateAgentTestComponene Instantiated");
 	}
 
+	/*
 	@Override
 	public Logger getAgentLog() {
 		return super.getAgentLog();
 	}
+	*/
 
 	@Override
 	protected String getAgentName() {
@@ -116,7 +129,7 @@ public class StateAgentTestComponent extends AgentComponent {
 	@Override
 	protected void parentChangeNotifier(CompositeAgent oldParent) {
 		super.parentChangeNotifier(oldParent);
-
+/*
 		if (getParent() != null) {
 			locallog = (UnitComponent) new UnitComponent().setUnitName("state_testing-" + getAgentName())
 					.setLogLevel(Level.ALL);
@@ -125,13 +138,13 @@ public class StateAgentTestComponent extends AgentComponent {
 			locallog.doExit();
 			locallog = null;
 		}
+		*/
 	}
 
 	@Override
 	protected void atAgentStart(AgentEvent event) {
 		super.atAgentStart(event);
-		System.out.println("Agent started");
-
+		Log.v("smth", "Agent started atAgentStart");
 		if (getParent() != null) {
 			thisAgent = getAgentName();
 		}
@@ -156,7 +169,7 @@ public class StateAgentTestComponent extends AgentComponent {
 		// AgentEvent event = new AgentEvent(AgentEventType.BEFORE_MOVE);
 		super.atAgentStop(event);
 		pingTimer.cancel();
-		getAgentLog().lf("atAgentStop ");
+		Log.v("mobility", "atAgentStop ");
 	}
 	//
 	// @Override

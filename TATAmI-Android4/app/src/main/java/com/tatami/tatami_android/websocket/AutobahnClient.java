@@ -11,13 +11,14 @@
  ******************************************************************************/
 package com.tatami.tatami_android.websocket;
 
+import android.util.Log;
+
 import java.net.URI;
 import java.util.HashMap;
 
-import main.java.org.java_websocket.client.WebSocketClient;
-import main.java.org.java_websocket.drafts.Draft;
-import main.java.org.java_websocket.handshake.ServerHandshake;
-import net.xqhs.util.logging.UnitComponentExt;
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.drafts.Draft;
+import org.java_websocket.handshake.ServerHandshake;
 
 /**
  * The AutobahnClient class is the interface with the client part of the java websocket project
@@ -27,12 +28,12 @@ public class AutobahnClient extends WebSocketClient
 	/**
 	 * The log.
 	 */
-	UnitComponentExt log = new UnitComponentExt();
+	//UnitComponentExt log = new UnitComponentExt();
 	
 	/**
 	 * The map between the agent names and their corresponding server references
 	 */
-	HashMap<String, WebSocketMessagingPlatform> pltformRouting;
+	HashMap<String, com.tatami.tatami_android.websocket.WebSocketMessagingPlatform> pltformRouting;
 	
 	
 	/**
@@ -91,7 +92,7 @@ public class AutobahnClient extends WebSocketClient
 			send(containerMessage);
 		}
 		catch(Exception e){
-			log.error("Unable to register container", e.getMessage());
+			Log.e("core", "Unable to register container" + e.getMessage());
 		}
 		
 	}
@@ -113,7 +114,8 @@ public class AutobahnClient extends WebSocketClient
 			
 			for(WebSocketMessagingPlatform platform: pltformRouting.values()){
 				
-				if (content == null )System.out.println(".................." + content);
+				if (content == null )
+					System.out.println(".................." + content);
 				platform.onMobilityPackReceived(content);
 			}
 			return;

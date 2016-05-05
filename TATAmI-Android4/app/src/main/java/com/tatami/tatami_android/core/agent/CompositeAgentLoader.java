@@ -25,7 +25,6 @@ import java.util.Iterator;
 import XML.XMLTree.XMLNode;
 import components.dev.mobility.ComponentFactory;
 
-import net.xqhs.util.logging.Logger;
 
 /**
  * Agent loader for agents based on {@link CompositeAgent}.
@@ -167,7 +166,7 @@ public class CompositeAgentLoader implements AgentLoader
 						.addObject(ParametricComponent.COMPONENT_PARAMETER_NAME, agentCreationData.getParameters());
 
 			if(component == null){
-				Log.v("smth", "==========================");
+				Log.v("smth", "==========================" + componentClass);
 			}
 			if(component.preload(componentData, componentNode, agentCreationData.getPackages()))
 			{

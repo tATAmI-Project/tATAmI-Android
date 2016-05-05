@@ -21,9 +21,6 @@ import XML.XMLTree;
 import components.dev.mobility.ComponentFactory;
 
 import net.xqhs.util.config.Config;
-import net.xqhs.util.logging.LoggerSimple;
-import net.xqhs.util.logging.UnitComponentExt;
-import net.xqhs.util.logging.logging.Logging;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,12 +43,9 @@ import java.util.Set;
  */
 public class Boot
 {
-    /**
-     * The log of the class.
-     */
-    protected UnitComponentExt log	= (UnitComponentExt) new UnitComponentExt().setUnitName("boot").setLoggerType(
-            PlatformUtils.platformLogType());
 
+    static boolean isUp = false;
+    SimulationManager simulationManager = null;
     /**
      * The method handling main functionality of {@link Boot}.
      * <p>
@@ -78,7 +72,7 @@ public class Boot
         }
 
         // create window layout
-       //WindowLayout.staticLayout = new GridWindowLayout(settings.getLayout());
+        //WindowLayout.staticLayout = new GridWindowLayout(settings.getLayout());
 
         // build agent creation data
 
@@ -131,8 +125,11 @@ public class Boot
                 timeline = scenarioTree.getRoot().getNodeIterator(SimulationManager.TIMELINE_NODE.toString()).next();
 
             // start simulation
-            if(!new SimulationManager(platforms, allContainers, allAgents, timeline).start())
-            {
+            simulationManager = new SimulationManager(platforms, allContainers, allAgents, timeline);
+            if(simulationManager.start()){
+                Log.v("smth", "Simulation calledx");
+            }
+            else {
                 Log.e("Boot.java", "Simulation start failed.");
                 for(PlatformLoader platform : platforms.values())
                     if(!platform.stop())
@@ -143,7 +140,10 @@ public class Boot
         }
         else
             Log.e("Boot.java", "No agent platforms loaded. Simulation will not start.");
-        log.doExit();
+        //log.doExit();
+
+
+        isUp = true;
     }
 
     /**
@@ -446,9 +446,12 @@ public class Boot
         String agentLoaderName = PlatformUtils.getParameterValue(agentNode, AgentParameterName.AGENT_LOADER.toString());
         if(agentLoaderName == null)
             agentLoaderName = defaultAgentLoader;
-        if(!agentLoaders.containsKey(agentLoaderName))
-            return (AgentCreationData) log.lr(null, "agent loader [" + agentLoaderName + "] is unknown. agent ["
+        if(!agentLoaders.containsKey(agentLoaderName)) {
+            Log.v("boot", "agent loader [" + agentLoaderName + "] is unknown. agent ["
                     + agentName + "] will not be created.");
+            return null;
+
+        }
         AgentLoader loader = agentLoaders.get(agentLoaderName);
 
         // get all parameters and put them into an AgentParameters instance.
@@ -520,6 +523,10 @@ public class Boot
         return platformsOK;
     }
 
+    public SimulationManager getSimulationManager(){
+        return simulationManager;
+    }
+
     /**
      * Main method. It calls {@link Boot#boot(String[])} with the arguments received by the program.
      *
@@ -528,7 +535,7 @@ public class Boot
      */
     public static void main(String[] args)
     {
-        Logging.getMasterLogging().setLogLevel(LoggerSimple.Level.ALL);
+        //Logging.getMasterLogging().setLogLevel(LoggerSimple.Level.ALL);
         new Boot().boot(args);
     }
 }

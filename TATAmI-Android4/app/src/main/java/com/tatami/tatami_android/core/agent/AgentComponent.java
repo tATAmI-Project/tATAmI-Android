@@ -11,6 +11,8 @@
  ******************************************************************************/
 package com.tatami.tatami_android.core.agent;
 
+import android.util.Log;
+
 import com.tatami.tatami_android.core.agent.messaging.MessagingComponent;
 import com.tatami.tatami_android.core.agent.mobility.MobilityComponent;
 import com.tatami.tatami_android.core.util.ParameterSet;
@@ -21,8 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import XML.XMLTree.XMLNode;
-import net.xqhs.util.logging.DumbLogger;
-import net.xqhs.util.logging.Logger;
 /**
  * This class serves as base for agent components. A component is characterized by its functionality, denominated by
  * means of its name -- an instance of {@link AgentComponentName}.
@@ -116,6 +116,9 @@ public abstract class AgentComponent implements Serializable
 		 */
 		VISUALIZABLE_COMPONENT(
 				AgentComponentName.AGENT_COMPONENT_PACKAGE_ROOT + ".visualization.VisualizableComponent"),
+
+		CONTROL_COMPONENT(
+				AgentComponentName.AGENT_COMPONENT_PACKAGE_ROOT + "control.ControlComponent"),
 				
 		/**
 		 * The name of a component extending {@link CognitiveComponent}.
@@ -301,6 +304,7 @@ public abstract class AgentComponent implements Serializable
 			@Override
 			public void handleEvent(AgentEvent event)
 			{
+                Log.v("smth", "handle");
 				atAgentStart(event);
 			}
 		});
@@ -519,8 +523,11 @@ public abstract class AgentComponent implements Serializable
 	 */
 	void signalAgentEvent(AgentEvent event)
 	{
-		if(eventHandlers.containsKey(event.getType()))
-			eventHandlers.get(event.getType()).handleEvent(event);
+        Log.v("smth", "signal");
+		if(eventHandlers.containsKey(event.getType())) {
+            Log.v("smth", "callx " + event.toString());
+            eventHandlers.get(event.getType()).handleEvent(event);
+        }
 	}
 	
 	/**
@@ -604,7 +611,7 @@ public abstract class AgentComponent implements Serializable
 		if(eventHandlers.containsKey(event))
 		{
 			oldHandler = eventHandlers.get(event);
-			getAgentLog().warn("Handler for event [] overwritten with []; was []", event, handler, oldHandler);
+			//getAgentLog().warn("Handler for event [] overwritten with []; was []", event, handler, oldHandler);
 		}
 		eventHandlers.put(event, handler);
 		return oldHandler;
@@ -626,9 +633,10 @@ public abstract class AgentComponent implements Serializable
 	 * @return the log of the agent, or an instance of {@link DumbLogger}, if one is not present or cannot be obtained.
 	 *         <code>null</code> should never be returned.
 	 */
+	/*
 	protected Logger getAgentLog()
 	{
-		/*
+
 		try
 		{
 			return ((VisualizableComponent) getAgentComponent(AgentComponentName.VISUALIZABLE_COMPONENT)).getLog();
@@ -636,10 +644,10 @@ public abstract class AgentComponent implements Serializable
 		{
 			return DumbLogger.get();
 		}
-		*/
+
 		return null;
 	}
-	
+	*/
 	/**
 	 * Handles the registration of an event handler for messages to a target (inside the agent) with the specified
 	 * prefix (elements of the internal path of the endpoint).
