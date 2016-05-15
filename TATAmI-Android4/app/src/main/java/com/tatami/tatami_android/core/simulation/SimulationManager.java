@@ -15,12 +15,10 @@ import android.util.Log;
 
 import com.tatami.tatami_android.core.agent.AgentComponent;
 import com.tatami.tatami_android.core.agent.AgentEvent;
-import com.tatami.tatami_android.core.agent.io.AgentActiveIO;
 import com.tatami.tatami_android.core.agent.messaging.MessagingComponent;
+import com.tatami.tatami_android.core.simulation.external_interface.ExternalInterface;
 import com.tatami.tatami_android.core.util.platformUtils.PlatformUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -30,7 +28,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Vector;
 
 import XML.XMLTree.XMLNode;
 
@@ -176,6 +173,8 @@ public class SimulationManager implements AgentManager
 	 * The {@link Timer} for simulation time and also the display in the GUI.
 	 */
 	Timer								theTime							= null;
+
+	ExternalInterface extInt;
 	
 	/**
 	 * Creates a new instance, also starting the GUI, based on the map of platforms and their names, the map of agents
@@ -195,7 +194,8 @@ public class SimulationManager implements AgentManager
 	{/*
 		log = (UnitComponentExt) new UnitComponentExt().setUnitName("simulation").setLoggerType(
 				PlatformUtils.platformLogType());
-				*/
+		*/
+		extInt = new ExternalInterface(this);
 		platforms = allPlatforms;
 		containers = allContainers;
 		agents = allAgents;
@@ -209,7 +209,6 @@ public class SimulationManager implements AgentManager
 	@Override
 	public boolean start()
 	{
-		Log.v("smth", "Simulation started");
         return startSystem();
 	}
 	
@@ -243,7 +242,7 @@ public class SimulationManager implements AgentManager
 			fullstop();
 			return false;
 		}
-		
+		extInt.afterSystemStart();
 		return true;
 	}
 	
@@ -639,7 +638,7 @@ public class SimulationManager implements AgentManager
 	/**
 	 * Interface exposed to external components
 	 */
-
+/*
 	public int getAgentsCount(){
 		if(simulationAgents != null){
 			simulationAgents.size();
@@ -658,7 +657,7 @@ public class SimulationManager implements AgentManager
 		}
 		return null;
 	}
-
+*/
 
 	public boolean createAgent(){
 		createAgents();
@@ -670,5 +669,9 @@ public class SimulationManager implements AgentManager
             createAgents();
         signalAllAgents(AgentEvent.AgentEventType.SIMULATION_START);
     }
+
+	public ExternalInterface ext(){
+		return extInt;
+	}
 
 }

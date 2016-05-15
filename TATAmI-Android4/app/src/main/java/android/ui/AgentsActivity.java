@@ -8,18 +8,20 @@ import android.widget.ListView;
 
 import com.tatami.tatami_android.BackgroundThread;
 import com.tatami.tatami_android.R;
+import com.tatami.tatami_android.core.simulation.external_interface.ExtAgentInfo;
+import com.tatami.tatami_android.core.simulation.external_interface.ExternalInterfaceListener;
 
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class AgentsActivity extends AppCompatActivity {
+public class AgentsActivity extends AppCompatActivity implements ExternalInterfaceListener.AgentRelated{
 
     ListView agentsList;
 
 
-    void onAgentsManagerRefresh(View v){
+    void refresh(){
         Vector<String> agentsName =
-                BackgroundThread.getBoot().getSimulationManager().getAgentsName();
+                BackgroundThread.getBoot().getSimulationManager().ext().getAgentsNames();
 
 
         String[] indexes = new String[agentsName.size()];
@@ -33,6 +35,9 @@ public class AgentsActivity extends AppCompatActivity {
         AgentsManagerListAdaptor adaptor = new AgentsManagerListAdaptor(this, indexes, entries);
 
         agentsList.setAdapter(adaptor);
+    }
+    void onAgentsManagerRefresh(View v){
+        refresh();
     }
 
     void onNewAgentClicked(View v){
@@ -50,6 +55,8 @@ public class AgentsActivity extends AppCompatActivity {
         agentsList = (ListView) findViewById(R.id.agents_manager_list);
     }
 
-
+    public void onAgentAdded(ExtAgentInfo agentInfo){
+        refresh();
+    }
 
 }

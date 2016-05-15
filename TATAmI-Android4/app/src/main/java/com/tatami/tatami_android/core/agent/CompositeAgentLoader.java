@@ -13,6 +13,7 @@ package com.tatami.tatami_android.core.agent;
 
 import android.util.Log;
 
+import com.tatami.tatami_android.BackgroundThread;
 import com.tatami.tatami_android.core.agent.parametric.ParametricComponent;
 import com.tatami.tatami_android.core.simulation.AgentCreationData;
 import com.tatami.tatami_android.core.simulation.AgentLoader;
@@ -184,10 +185,11 @@ public class CompositeAgentLoader implements AgentLoader
 	@Override
 	public AgentManager load(AgentCreationData agentCreationData)
 	{
-		System.out.println("=================================+++Load");
 		CompositeAgent agent = new CompositeAgent();
 		for(Object componentObj : agentCreationData.getParameters().getObjects(COMPONENT_PARAMETER_NAME))
 			agent.addComponent((AgentComponent) componentObj);
+
+		BackgroundThread.getBoot().getSimulationManager().ext().onAgentAdded(agent);
 		return agent;
 	}
 }

@@ -13,6 +13,8 @@ public class MainActivity extends AppCompatActivity {
     public static Context context;
 
 
+
+
     void onAgentsManagerClick(View v){
         Intent agentsManagerActivity = new Intent(
                 MainActivity.this, AgentsActivity.class);
