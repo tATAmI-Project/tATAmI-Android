@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.ui.AgentsActivity;
+import android.ui.backend.Backend;
 import android.view.View;
 import android.content.Intent;
 
@@ -12,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static Context context;
 
-
+    public static Backend backend;
 
 
     void onAgentsManagerClick(View v){
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
 */
         new BackgroundThread(context).start();
+
+        backend = new Backend();
 /*
         dialog.hide();
 */

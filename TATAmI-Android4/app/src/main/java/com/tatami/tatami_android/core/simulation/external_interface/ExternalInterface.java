@@ -70,6 +70,12 @@ public class ExternalInterface {
         }
     }
 
+    public void onAgentLog(String agentName, String newLog){
+        for(Map.Entry<String, ExternalInterfaceListener.AgentRelated> entry: allListeners.entrySet()){
+            entry.getValue().onAgentLog(agentName, newLog);
+        }
+    }
+
     public void onAgentRemoved(){
 
     }

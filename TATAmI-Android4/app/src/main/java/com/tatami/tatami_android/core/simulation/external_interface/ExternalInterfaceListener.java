@@ -8,5 +8,6 @@ public interface ExternalInterfaceListener {
 
     interface AgentRelated{
         public void onAgentAdded(ExtAgentInfo agentInfo);
+        public void onAgentLog(String agentName, String newLog);
     }
 }

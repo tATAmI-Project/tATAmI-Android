@@ -2,6 +2,7 @@ package components.dev.mobility;
 
 import android.util.Log;
 
+import com.tatami.tatami_android.BackgroundThread;
 import com.tatami.tatami_android.core.agent.AgentComponent;
 import com.tatami.tatami_android.core.agent.AgentEvent;
 import com.tatami.tatami_android.core.agent.CompositeAgent;
@@ -80,6 +81,8 @@ public class StateAgentTestComponent extends AgentComponent {
 			Log.v("mobility", "Incremented " + mSubject);
 
 			Log.v("smth", "" + mSubject);
+
+			BackgroundThread.getBoot().getSimulationManager().ext().onAgentLog(getAgentName(), "" + mSubject );
 			// Time to move
 			if (mSubject == 10) {
 				//mParent.move("OtherContainer");
@@ -169,6 +172,7 @@ public class StateAgentTestComponent extends AgentComponent {
 		// AgentEvent event = new AgentEvent(AgentEventType.BEFORE_MOVE);
 		super.atAgentStop(event);
 		pingTimer.cancel();
+
 		Log.v("mobility", "atAgentStop ");
 	}
 	//

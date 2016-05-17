@@ -22,7 +22,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create New Agent"
+        android:text="Create Agents"
         android:id="@+id/AgentsManagerNewAgentButton"
         android:onClick="onNewAgentClicked"
         android:layout_above="@+id/agents_manager_refresh"
